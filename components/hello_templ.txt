@@ -1,0 +1,2 @@
+<div>Hello, 
+ you are a good friend</div>

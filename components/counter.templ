@@ -1,0 +1,24 @@
+package components
+
+import "strconv"
+
+templ counts(global, user int) {
+	<div>Global: { strconv.Itoa(global) }</div>
+	<div>User: { strconv.Itoa(user) }</div>
+}
+
+css testcss() {
+	background-color: red;
+}
+
+templ form() {
+	<form action="/count" method="POST">
+		<div><button class={templ.KV(testcss(), true)} type="submit" name="global" value="global">Global</button></div>
+		<div><button type="submit" name="user" value="user">User</button></div>
+	</form>
+}
+
+templ Counter(global, user int) {
+	@counts(global, user)
+	@form()
+}
