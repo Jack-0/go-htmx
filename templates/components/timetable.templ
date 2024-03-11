@@ -1,0 +1,46 @@
+package components
+
+import (
+	"strconv"
+	"local/htmx-tt/templates/pages"
+)
+
+func CreateTimetable(limit int) [][]int {
+	var numbers2D = make([][]int, limit)
+	for i := range numbers2D {
+		numbers2D[i] = make([]int, limit)
+		for j := range numbers2D[i] {
+			numbers2D[i][j] = (i + 1) * (j + 1)
+		}
+	}
+	return numbers2D
+}
+
+templ TimeTable(numbers2D [][]int) {
+	@Pages.Page("Time Table") {
+		<div>
+			for i := 0; i < len(numbers2D); i++ {
+				<div class="table">
+					for j := 0; j < len(numbers2D[i]); j++ {
+						<div class="grid-item">
+							{ strconv.Itoa(numbers2D[i][j]) }
+						</div>
+					}
+				</div>
+			}
+		</div>
+	}
+	<style>
+		.table {
+			display: flex;
+			flex-flow: row wrap;
+			justify-content: center;
+			align-items: center;
+		}
+
+		.grid-item {
+			padding: 1rem;
+			width: 1rem;
+		}
+	</style>
+}

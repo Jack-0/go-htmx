@@ -1,0 +1,16 @@
+package Pages
+
+templ Page(title string) {
+	<html>
+		<meta charset="UTF-8"/>
+		<title>{ title }</title>
+		<script>
+			console.log("hello")
+		</script>
+		<body>
+			<div style="padding: 20px;">
+				{ children... }
+			</div>
+		</body>
+	</html>
+}
