@@ -5,7 +5,7 @@ import (
 	"local/htmx-tt/templates/pages"
 )
 
-func CreateTimetable(limit int) [][]int {
+func CreateTimestable(limit int) [][]int {
 	var numbers2D = make([][]int, limit)
 	for i := range numbers2D {
 		numbers2D[i] = make([]int, limit)
@@ -23,7 +23,13 @@ templ TimeTable(numbers2D [][]int) {
 				<div class="table">
 					for j := 0; j < len(numbers2D[i]); j++ {
 						<div class="grid-item">
-							{ strconv.Itoa(numbers2D[i][j]) }
+							<div 
+								if j == 0 || i == 0  {
+									class="test"
+								}
+							> 
+								{ strconv.Itoa(numbers2D[i][j]) }
+							</div>
 						</div>
 					}
 				</div>
@@ -41,6 +47,10 @@ templ TimeTable(numbers2D [][]int) {
 		.grid-item {
 			padding: 1rem;
 			width: 1rem;
+		}
+
+		.test {
+			color: red;
 		}
 	</style>
 }
