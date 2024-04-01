@@ -1,3 +1,0 @@
-<!doctype html><html lang=\"en\"><head><title>
-</title><link rel=\"icon\" type=\"image/x-icon\" href=\"assets/favicon/android-chrome-192x192.png\"><meta charset=\"UTF-8\"></head><script>\n\t\t\tconsole.log(\"hello\")\n\t\t</script><body><div style=\"padding: 20px;\">
-</div></body></html>

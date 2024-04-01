@@ -1,9 +1,0 @@
-<div>
-<div class=\"table\">
-<div class=\"grid-item\"><div
- class=\"test\"
->
-</div></div>
-</div>
-</div>
-<style>\n\t\t.table {\n\t\t\tdisplay: flex;\n\t\t\tflex-flow: row wrap;\n\t\t\tjustify-content: center;\n\t\t\talign-items: center;\n\t\t}\n\n\t\t.grid-item {\n\t\t\tpadding: 1rem;\n\t\t\twidth: 1rem;\n\t\t}\n\n\t\t.test {\n\t\t\tcolor: red;\n\t\t}\n\t</style>

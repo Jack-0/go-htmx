@@ -1,1 +1,1 @@
-./templ generate --watch --cmd="go run main.go"
+./templ generate --watch --cmd="go run cmd/main.go"
