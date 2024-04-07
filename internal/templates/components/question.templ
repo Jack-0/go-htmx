@@ -1,0 +1,24 @@
+package components
+
+import (
+	"local/htmx-tt/internal/templates/pages"
+	"local/htmx-tt/internal/domain"
+	"strconv"
+)
+
+templ QuestionView(question domain.TTCurrentQuestion) {
+	@Pages.Page("Question") {
+		<div id="question-div">
+			<form>
+				<p>{ strconv.Itoa(int(question.ValueA)) } x { strconv.Itoa(int(question.ValueB)) }</p>
+				<input type="number" id="numberInput" name="numberInput"/>
+				<button
+					type="submit"
+					hx-post="/answer"
+					hx-trigger="click"
+					hx-target="#question-div"
+				>yeah</button>
+			</form>
+		</div>
+	}
+}

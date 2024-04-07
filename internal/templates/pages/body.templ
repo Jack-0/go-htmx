@@ -1,5 +1,21 @@
 package Pages
 
+
+templ Header() {
+	//<p>user is { User.SelectedUser }</p>
+	<select id="userSelect" hx-put="/users" hx-trigger="load change" hx-swap="innerHTML"></select>
+}
+
+templ Users(users []string, user string) {
+	for _, u := range users {
+		if u == user {
+			<option selected>{ u }</option>
+		} else {
+			<option>{ u }</option>
+		}
+	}
+}
+
 templ Page(title string) {
 	<!DOCTYPE html>
 	<html lang="en">
@@ -8,11 +24,13 @@ templ Page(title string) {
 			<link rel="icon" type="image/x-icon" href="assets/favicon/android-chrome-192x192.png"/>
 			<meta charset="UTF-8"/>
 		</head>
+		<script src="/assets/js/htmx.min.js"></script>
 		<script>
 			console.log("hello")
 		</script>
 		<body>
 			<div style="padding: 20px;">
+				@Header()
 				{ children... }
 			</div>
 		</body>
