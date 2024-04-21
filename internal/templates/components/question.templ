@@ -8,17 +8,62 @@ import (
 
 templ QuestionView(question domain.TTCurrentQuestion) {
 	@Pages.Page("Question") {
-		<div id="question-div">
-			<form>
-				<p>{ strconv.Itoa(int(question.ValueA)) } x { strconv.Itoa(int(question.ValueB)) }</p>
-				<input type="number" id="numberInput" name="numberInput"/>
-				<button
-					type="submit"
-					hx-post="/answer"
-					hx-trigger="click"
-					hx-target="#question-div"
-				>yeah</button>
-			</form>
-		</div>
+		@Question(question)
 	}
+}
+
+templ Question(question domain.TTCurrentQuestion) {
+	<div id="question-div" class="question">
+		<form class="question-form">
+			<p class="question-text">{ strconv.Itoa(int(question.ValueA)) } x { strconv.Itoa(int(question.ValueB)) }</p>
+			<input type="number" id="numberInput" name="numberInput"/>
+			<button
+				class="question-button"
+				type="submit"
+				hx-post="/answer"
+				hx-trigger="click"
+				hx-target="#question-div"
+			>yeah</button>
+			<div class="number-grid">
+				for i:=9; i>-1; i-- {
+					<div class="number-item">
+						{ strconv.Itoa(i) }
+					</div>
+				}
+			</div>
+			<button type="button">a</button>
+		</form>
+	</div>
+	<style type="text/css">
+		.question {
+			align-items: center; 
+			width: 100%; 
+			margin-left: auto;
+			margin-right: auto; 
+			color: red;
+		}
+
+		.question-text {
+			text-align: center;
+		}
+
+		.question-form {
+			align-self: center; 
+		}
+		
+		.number-grid {
+			display: grid;
+			grid-template-columns: repeat(3, 1fr);
+			grid-gap: 10px;
+		}
+
+		.number-item {
+			background-color: lightblue;
+		}
+
+		.number-item:nth-last-child(1) {
+			grid-column: span 3;
+			background-color: purple;
+		}
+	</style>
 }

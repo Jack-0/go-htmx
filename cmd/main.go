@@ -82,7 +82,7 @@ func answerQuestion(w http.ResponseWriter, r *http.Request, tt *timetable_servic
 
 	println("next Q valueA is:", q.ValueA)
 
-	components.QuestionView(q).Render(r.Context(), w)
+	components.Question(q).Render(r.Context(), w)
 }
 
 type RequestBody struct {

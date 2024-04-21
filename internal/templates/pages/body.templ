@@ -1,6 +1,5 @@
 package Pages
 
-
 templ Header() {
 	//<p>user is { User.SelectedUser }</p>
 	<select id="userSelect" hx-put="/users" hx-trigger="load change" hx-swap="innerHTML"></select>
@@ -30,9 +29,16 @@ templ Page(title string) {
 		</script>
 		<body>
 			<div style="padding: 20px;">
-				@Header()
+				//@Header()
+				//hello world
 				{ children... }
 			</div>
 		</body>
+		<style>
+			@font-face { font-family: ComicMono; src: url("assets/fonts/ComicMono.ttf"); }
+			body {
+				font-family: 'ComicMono', Fallback, sans-serif;
+			}
+		</style>
 	</html>
 }
