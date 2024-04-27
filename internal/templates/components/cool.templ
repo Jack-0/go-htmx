@@ -1,0 +1,31 @@
+package components
+
+import (
+	"local/htmx-tt/internal/templates/pages"
+)
+
+templ Cool() {
+	<div class="square"></div>
+	<style type="text/css">
+	.square {
+			width: 100px;
+			height: 100px;
+			background: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet);
+			animation: color-change 5s infinite alternate;
+		}
+	@keyframes color-change {
+		0% {
+			background-position: 0%;
+		}
+		100% {
+			background-position: 100%;
+		}
+	}
+	</style>
+}
+
+templ CoolPage() {
+	@Pages.Page("Cool") {
+		@Cool()
+	}
+}

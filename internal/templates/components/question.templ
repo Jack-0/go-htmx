@@ -6,32 +6,87 @@ import (
 	"strconv"
 )
 
-templ QuestionView(question domain.TTCurrentQuestion) {
-	@Pages.Page("Question") {
-		@Question(question)
-	}
+templ QuestionInput(value string) {
+	<input
+		type="number"
+		id="number-input"
+		class="numberInput"
+		name="number-input"
+		hx-post="/handle-keystroke"
+		hx-trigger="keyup"
+		hx-target="#number-input"
+		value={ value }
+	/>
+	<style type="text/css">
+		/* hide number arrow keys */
+		input::-webkit-outer-spin-button,
+		input::-webkit-inner-spin-button {
+			-webkit-appearance: none;
+			margin: 0;
+		}
+		input[type=number] {
+		  -moz-appearance: textfield;
+		  color: gray;
+		}
+		.numberInput {
+			width: 100%;
+			text-align: center;
+			border: none;
+			outline: none;
+			font-family: 'ComicMono', Fallback, sans-serif;
+			font-size: 88px;
+			color: #333333;
+			align-items: center; 
+			width: 100%; 
+			margin-left: auto;
+			margin-right: auto; 
+		}
+
+		.numberInput:focus {
+			animation: blink-caret 0.75s step-end infinite;
+		}
+
+		@keyframes blink-caret {
+		  from, to {
+			border-color: transparent;
+		  }
+		  50% {
+			border-color: #333333; 
+		  }
+		}
+	</style>
 }
 
+// todo... on focus loss refocus input
 templ Question(question domain.TTCurrentQuestion) {
 	<div id="question-div" class="question">
+		<p class="question-text">{ strconv.Itoa(int(question.ValueA)) } x { strconv.Itoa(int(question.ValueB)) }</p>
 		<form class="question-form">
-			<p class="question-text">{ strconv.Itoa(int(question.ValueA)) } x { strconv.Itoa(int(question.ValueB)) }</p>
-			<input type="number" id="numberInput" name="numberInput"/>
+			@QuestionInput("")
 			<button
-				class="question-button"
+				class="cool-btn submit submit-text"
 				type="submit"
 				hx-post="/answer"
 				hx-trigger="click"
 				hx-target="#question-div"
-			>yeah</button>
+				hx-swap="outerHTML"
+				id="answerBtn"
+			>Submit</button>
 			<div class="number-grid">
 				for i:=9; i>-1; i-- {
-					<div class="number-item">
-						{ strconv.Itoa(i) }
-					</div>
+					<button
+						class="cool-btn cool-btn-text"
+						type="button"
+						hx-target="#number-input"
+						hx-post={ "/handle-number-button/" + strconv.Itoa(i) }
+						hx-swap="outerHTML"
+					>
+						<p>
+							{ strconv.Itoa(i) }
+						</p>
+					</button>
 				}
 			</div>
-			<button type="button">a</button>
 		</form>
 	</div>
 	<style type="text/css">
@@ -40,10 +95,11 @@ templ Question(question domain.TTCurrentQuestion) {
 			width: 100%; 
 			margin-left: auto;
 			margin-right: auto; 
-			color: red;
+			color: #333333;
 		}
 
 		.question-text {
+			font-size: 88px;
 			text-align: center;
 		}
 
@@ -55,15 +111,88 @@ templ Question(question domain.TTCurrentQuestion) {
 			display: grid;
 			grid-template-columns: repeat(3, 1fr);
 			grid-gap: 10px;
+			align-items: center;
+			justify-content: center;
+			width: 300px;
+			margin-left: auto;
+			margin-right: auto; 
 		}
 
 		.number-item {
-			background-color: lightblue;
+			background-color: red;
 		}
 
 		.number-item:nth-last-child(1) {
 			grid-column: span 3;
-			background-color: purple;
+		}
+
+		.cool-btn-text {
+			color: #555;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			padding: 2px;
+			font-family: 'ComicMono', Fallback, sans-serif;
+		}
+
+		.cool-btn:nth-last-child(1) {
+			grid-column: span 3;
+		}
+
+		.cool-btn {
+			display: inline-flex;
+			align-items: center;
+			font-size: 1rem;
+			padding: .5em .5em;
+			/* color: #495057; */
+			background-color: #f1f3f5;
+			border-radius: 0.5em;
+			/* border: 0.1em solid #ced4da; */
+			border: 0.1em solid #ced4da;
+			box-shadow: 0 4px #ced4da;
+			transition: all 0.1s;
+			user-select: none;
+			margin-bottom: 1em;
+			margin-right: 1em;
+		}
+		.cool-btn:focus,
+		.cool-btn:hover {
+			background-color: #e9ecef;
+			outline: 2px #1971c2;
+		}
+		.cool-btn:active {
+			transform: translateY(4px);
+			box-shadow: none;
+		}
+
+		.submit {
+			margin-top: 20px;
+			margin-bottom: 20px;
+			width: 300px;
+			margin-left:auto;
+			margin-right:auto;
+			background-color: #ce83ff;
+			border: 0.1em solid #a568cd;
+			box-shadow: 0 4px #a568cd;
+		}
+		.submit:focus,
+		.submit:hover {
+			background-color: #ca79ff;
+			outline: 2px #a568cd;
+		}
+		.submit-text {
+			color: rgba(0,0,0,0.5);
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			padding: 11px;
+			font-family: 'ComicMono', Fallback, sans-serif;
 		}
 	</style>
+}
+
+templ QuestionView(question domain.TTCurrentQuestion) {
+	@Pages.Page("Question") {
+		@Question(question)
+	}
 }

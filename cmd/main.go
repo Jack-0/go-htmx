@@ -38,6 +38,9 @@ func main() {
 
 	fmt.Println("Tables:", tables)
 
+	http.HandleFunc("/handle-keystroke", handleKeystroke)
+	http.HandleFunc("/handle-number-button/{id}", handleNumberButton)
+
 	// http.Handle("/", templ.Handler(components.TimeTable(components.CreateTimestable(12)))) // TODO conflict with other roots?
 	http.Handle("/assets/", http.StripPrefix("/assets/", http.FileServer(http.Dir("./assets"))))
 
@@ -59,6 +62,19 @@ func main() {
 	http.ListenAndServe("localhost:3000", nil)
 }
 
+func handleKeystroke(w http.ResponseWriter, r *http.Request) {
+    keystroke := r.FormValue("number-input")
+    fmt.Println("Received keystroke:", keystroke)
+}
+
+func handleNumberButton(w http.ResponseWriter, r *http.Request) {
+	btnValue := r.PathValue("id");
+	currentInput := r.FormValue("number-input")
+	updatedInput := currentInput + btnValue;
+	components.QuestionInput(updatedInput).Render(r.Context(), w)
+}
+
+	
 func returnQuestion(tt *timetable_service.TimeTable) *templ.ComponentHandler {
 	q := tt.GetQuestion()
 	return templ.Handler(components.QuestionView(q))
@@ -70,18 +86,15 @@ func answerQuestion(w http.ResponseWriter, r *http.Request, tt *timetable_servic
 	if err != nil {
 		println("parse err", err)
 	}
-	answerInput := r.FormValue("numberInput")
-
+	answerInput := r.FormValue("number-input")
 	answer, _ := strconv.Atoi(answerInput)
 
-	println("inputIs", answer, answerInput)
-
+	fmt.Println("user put:", answer)
 	tt.AnswerQuestion(uint16(answer))
 
 	q := tt.GetQuestion()
 
 	println("next Q valueA is:", q.ValueA)
-
 	components.Question(q).Render(r.Context(), w)
 }
 
