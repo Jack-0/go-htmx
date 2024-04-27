@@ -57,10 +57,29 @@ templ QuestionInput(value string) {
 	</style>
 }
 
+templ QuestionText(question domain.TTCurrentQuestion) {
+	<p 
+		class="question-text" 
+		id="question-text" 
+		hx-trigger="load" 
+		hx-target="#number-input"
+		hx-swap="outerHTML" 
+		hx-post="/reset-number-input"
+	>
+		{ strconv.Itoa(int(question.ValueA)) } x { strconv.Itoa(int(question.ValueB)) }
+	</p>
+	<style type="text/css">
+		.question-text {
+			font-size: 88px;
+			text-align: center;
+		}
+	</style>
+}
+
 // todo... on focus loss refocus input
 templ Question(question domain.TTCurrentQuestion) {
 	<div id="question-div" class="question">
-		<p class="question-text">{ strconv.Itoa(int(question.ValueA)) } x { strconv.Itoa(int(question.ValueB)) }</p>
+		@QuestionText(question)
 		<form class="question-form">
 			@QuestionInput("")
 			<button
@@ -68,7 +87,7 @@ templ Question(question domain.TTCurrentQuestion) {
 				type="submit"
 				hx-post="/answer"
 				hx-trigger="click"
-				hx-target="#question-div"
+				hx-target="#question-text"
 				hx-swap="outerHTML"
 				id="answerBtn"
 			>Submit</button>
@@ -91,7 +110,7 @@ templ Question(question domain.TTCurrentQuestion) {
 						class="cool-btn cool-btn-text"
 						type="button"
 						hx-target="#number-input"
-						hx-post={ "/handle-number-button/del" }
+						hx-post="/handle-number-button/del"
 						hx-swap="outerHTML"
 					>
 						<p>
@@ -117,11 +136,6 @@ templ Question(question domain.TTCurrentQuestion) {
 			margin-left: auto;
 			margin-right: auto; 
 			color: #333333;
-		}
-
-		.question-text {
-			font-size: 88px;
-			text-align: center;
 		}
 
 		.question-form {

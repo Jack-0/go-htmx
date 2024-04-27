@@ -40,6 +40,9 @@ func main() {
 
 	http.HandleFunc("/handle-keystroke", handleKeystroke)
 	http.HandleFunc("/handle-number-button/{id}", handleNumberButton)
+	http.HandleFunc("/reset-number-input", func(w http.ResponseWriter, r *http.Request) {
+		components.QuestionInput("").Render(r.Context(), w)
+	})
 
 	// http.Handle("/", templ.Handler(components.TimeTable(components.CreateTimestable(12)))) // TODO conflict with other roots?
 	http.Handle("/assets/", http.StripPrefix("/assets/", http.FileServer(http.Dir("./assets"))))
@@ -101,7 +104,7 @@ func answerQuestion(w http.ResponseWriter, r *http.Request, tt *timetable_servic
 	q := tt.GetQuestion()
 
 	println("next Q valueA is:", q.ValueA)
-	components.Question(q).Render(r.Context(), w)
+	components.QuestionText(q).Render(r.Context(), w)
 }
 
 type RequestBody struct {
