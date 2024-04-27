@@ -63,18 +63,24 @@ func main() {
 }
 
 func handleKeystroke(w http.ResponseWriter, r *http.Request) {
-    keystroke := r.FormValue("number-input")
-    fmt.Println("Received keystroke:", keystroke)
+	keystroke := r.FormValue("number-input")
+	fmt.Println("Received keystroke:", keystroke)
 }
 
 func handleNumberButton(w http.ResponseWriter, r *http.Request) {
-	btnValue := r.PathValue("id");
+	btnValue := r.PathValue("id")
 	currentInput := r.FormValue("number-input")
-	updatedInput := currentInput + btnValue;
+	updatedInput := currentInput
+	if btnValue == "del" {
+		if len(updatedInput) > 0 {
+			updatedInput = updatedInput[:len(updatedInput)-1]
+		}
+	} else {
+		updatedInput = updatedInput + btnValue
+	}
 	components.QuestionInput(updatedInput).Render(r.Context(), w)
 }
 
-	
 func returnQuestion(tt *timetable_service.TimeTable) *templ.ComponentHandler {
 	q := tt.GetQuestion()
 	return templ.Handler(components.QuestionView(q))

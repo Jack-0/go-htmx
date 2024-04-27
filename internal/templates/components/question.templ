@@ -72,24 +72,45 @@ templ Question(question domain.TTCurrentQuestion) {
 				hx-swap="outerHTML"
 				id="answerBtn"
 			>Submit</button>
-			<div class="number-grid">
-				for i:=9; i>-1; i-- {
+			<div class="buttons">
+				<div class="number-grid">
+					for i:=9; i>-1; i-- {
+						<button
+							class="cool-btn cool-btn-text"
+							type="button"
+							hx-target="#number-input"
+							hx-post={ "/handle-number-button/" + strconv.Itoa(i) }
+							hx-swap="outerHTML"
+						>
+							<p>
+								{ strconv.Itoa(i) }
+							</p>
+						</button>
+					}
 					<button
 						class="cool-btn cool-btn-text"
 						type="button"
 						hx-target="#number-input"
-						hx-post={ "/handle-number-button/" + strconv.Itoa(i) }
+						hx-post={ "/handle-number-button/del" }
 						hx-swap="outerHTML"
 					>
 						<p>
-							{ strconv.Itoa(i) }
+							DEL
 						</p>
 					</button>
-				}
+				</div>
 			</div>
 		</form>
 	</div>
 	<style type="text/css">
+		.buttons {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			margin-left: auto;
+			margin-right: auto; 
+		}
+
 		.question {
 			align-items: center; 
 			width: 100%; 
@@ -108,22 +129,12 @@ templ Question(question domain.TTCurrentQuestion) {
 		}
 		
 		.number-grid {
+			width: 400px;
 			display: grid;
 			grid-template-columns: repeat(3, 1fr);
-			grid-gap: 10px;
+			grid-gap: 13px;
 			align-items: center;
 			justify-content: center;
-			width: 300px;
-			margin-left: auto;
-			margin-right: auto; 
-		}
-
-		.number-item {
-			background-color: red;
-		}
-
-		.number-item:nth-last-child(1) {
-			grid-column: span 3;
 		}
 
 		.cool-btn-text {
@@ -136,24 +147,23 @@ templ Question(question domain.TTCurrentQuestion) {
 		}
 
 		.cool-btn:nth-last-child(1) {
-			grid-column: span 3;
+			grid-column: span 2;
 		}
 
 		.cool-btn {
+			width: 100%;
+			height: 100%;
 			display: inline-flex;
 			align-items: center;
-			font-size: 1rem;
-			padding: .5em .5em;
-			/* color: #495057; */
+			font-size: 2rem;
 			background-color: #f1f3f5;
 			border-radius: 0.5em;
-			/* border: 0.1em solid #ced4da; */
 			border: 0.1em solid #ced4da;
 			box-shadow: 0 4px #ced4da;
 			transition: all 0.1s;
 			user-select: none;
-			margin-bottom: 1em;
-			margin-right: 1em;
+			margin-bottom: auto;
+			margin-right: auto;
 		}
 		.cool-btn:focus,
 		.cool-btn:hover {
@@ -168,7 +178,7 @@ templ Question(question domain.TTCurrentQuestion) {
 		.submit {
 			margin-top: 20px;
 			margin-bottom: 20px;
-			width: 300px;
+			width: 400px;
 			margin-left:auto;
 			margin-right:auto;
 			background-color: #ce83ff;
@@ -187,6 +197,18 @@ templ Question(question domain.TTCurrentQuestion) {
 			justify-content: center;
 			padding: 11px;
 			font-family: 'ComicMono', Fallback, sans-serif;
+		}
+
+		@media (max-width: 1023px) {
+			.number-grid {
+				width: 100%;
+			}
+			.submit {
+				width: 100%;
+			}
+			.cool-btn {
+				padding: 3rem;
+			}
 		}
 	</style>
 }
