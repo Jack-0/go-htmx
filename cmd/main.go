@@ -39,6 +39,7 @@ func main() {
 	fmt.Println("Tables:", tables)
 
 	http.HandleFunc("/handle-keystroke", handleKeystroke)
+	http.HandleFunc("/input", replaceInput)
 	http.HandleFunc("/handle-number-button/{id}", handleNumberButton)
 	http.HandleFunc("/reset-number-input", func(w http.ResponseWriter, r *http.Request) {
 		components.QuestionInput("").Render(r.Context(), w)
@@ -68,12 +69,18 @@ func main() {
 func handleKeystroke(w http.ResponseWriter, r *http.Request) {
 	keystroke := r.FormValue("number-input")
 	fmt.Println("Received keystroke:", keystroke)
+	// components.QuestionInput("69").Render(r.Context(), w)
+}
+
+func replaceInput(w http.ResponseWriter, r *http.Request) {
+	components.AnswerButton().Render(r.Context(), w)
 }
 
 func handleNumberButton(w http.ResponseWriter, r *http.Request) {
 	btnValue := r.PathValue("id")
 	currentInput := r.FormValue("number-input")
 	updatedInput := currentInput
+
 	if btnValue == "del" {
 		if len(updatedInput) > 0 {
 			updatedInput = updatedInput[:len(updatedInput)-1]
@@ -98,13 +105,10 @@ func answerQuestion(w http.ResponseWriter, r *http.Request, tt *timetable_servic
 	answerInput := r.FormValue("number-input")
 	answer, _ := strconv.Atoi(answerInput)
 
-	fmt.Println("user put:", answer)
-	tt.AnswerQuestion(uint16(answer))
-
+	correct := tt.AnswerQuestion(uint16(answer))
 	q := tt.GetQuestion()
 
-	println("next Q valueA is:", q.ValueA)
-	components.QuestionText(q).Render(r.Context(), w)
+	components.Question(q, false, correct).Render(r.Context(), w)
 }
 
 type RequestBody struct {

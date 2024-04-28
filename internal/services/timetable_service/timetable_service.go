@@ -3,7 +3,7 @@ package timetable_service
 import (
 	"local/htmx-tt/internal/domain"
 	"math/rand"
-	"sort"
+	// "sort"
 	"time"
 )
 
@@ -31,14 +31,21 @@ func randomizeList(list domain.QuestionList) domain.QuestionList {
 		j := rand.Intn(i + 1)
 		newList[i], newList[j] = newList[j], newList[i]
 	}
+
+	for _, x := range newList {
+		println(x.ValueA, "x", x.ValueB)
+	}
+
 	return newList
 }
 
 func setDefaultTT() domain.QuestionList {
 	const limit = 12
 	var questions domain.QuestionList
+	// todo maybe remove duplicate questions i.e 6x5 5x6
 	for i := 0; i < limit; i++ {
 		for j := 0; j < limit; j++ {
+			// println(i,"x",j)
 			newQuestion := domain.TTQuestion{
 				ValueA:          uint16(i),
 				ValueB:          uint16(j),
@@ -52,7 +59,6 @@ func setDefaultTT() domain.QuestionList {
 }
 
 func (tt *TimeTable) GetQuestion() domain.TTCurrentQuestion {
-	println("GETq")
 	// handle default empty state
 	if len(tt.QuestionList) == 0 {
 		// TODO try and get from dynamo later...
@@ -60,7 +66,8 @@ func (tt *TimeTable) GetQuestion() domain.TTCurrentQuestion {
 		println("new rand list is: ", tt.QuestionList)
 	} else {
 		// else sort current list
-		sort.Sort(tt.QuestionList)
+		println("pre sort", tt.QuestionList[0].ValueA, tt.QuestionList[0].ValueB)
+		// sort.Sort(tt.QuestionList)
 	}
 
 	// get next q... todo
@@ -69,23 +76,23 @@ func (tt *TimeTable) GetQuestion() domain.TTCurrentQuestion {
 	startTime := time.Now()
 	q := domain.TTCurrentQuestion{
 		ValueA:    nextQ.ValueA,
-		ValueB:    nextQ.ValueA,
+		ValueB:    nextQ.ValueB,
 		StartTime: startTime,
 	}
 	println("nextq", q.ValueA, q.ValueB)
 	tt.CurrentQuestion = q
-	println("tt", tt.CurrentQuestion.ValueA, tt.CurrentQuestion.ValueB)
 	return q
 }
 
-func (tt *TimeTable) AnswerQuestion(answer uint16) {
+func (tt *TimeTable) AnswerQuestion(answer uint16) bool {
 	success := tt.CurrentQuestion.ValueA*tt.CurrentQuestion.ValueB == answer
-	println(tt.CurrentQuestion.ValueA, "*", tt.CurrentQuestion.ValueA, "==", answer)
+	println(tt.CurrentQuestion.ValueA, "*", tt.CurrentQuestion.ValueB, "==", tt.CurrentQuestion.ValueA*tt.CurrentQuestion.ValueB)
 	endTime := time.Now()
 	timeMs := endTime.Sub(tt.CurrentQuestion.StartTime).Milliseconds()
-	println("question correct= ", success, " timeMs=", timeMs)
+	println("question correct=", success, "timeMs=", timeMs)
 
 	tt.QuestionList = tt.QuestionList[1:] //TODO actuall do this just testing
+	return success
 }
 
 // return a value between 0 and 5 where 0 is excellent and 5 is poor

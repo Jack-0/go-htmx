@@ -105,21 +105,115 @@ templ QuestionText(question domain.TTCurrentQuestion) {
 	</style>
 }
 
+templ SVGCheck() {
+	<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+		<!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+		<path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z"></path>
+	</svg>
+}
+
+templ SVGCross() {
+	<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
+		<!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+		<path d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z"></path>
+	</svg>
+}
+
+templ Result(correct bool) {
+	<div
+		id="result"
+		class="result-div"
+		hx-target="#result"
+		hx-trigger="load"
+		hx-get="input"
+		hx-swap="outerHTML swap:1.2s"
+	>
+		<p
+			if correct {
+				class="result result-text correct"
+			} else {
+				class="result result-text incorrect"
+			}
+		>
+			if correct {
+				Correct
+			} else {
+				Incorrect
+			}
+		</p>
+		<span
+			if correct {
+				class="result result-icon correct"
+			} else {
+				class="result result-icon incorrect"
+			}
+		>
+			if correct {
+				@SVGCheck()
+			} else {
+				@SVGCross()
+			}
+		</span>
+	</div>
+	<style type="text/css">
+		.incorrect {
+			fill: #ff6961;
+			color: #ff6961;
+		}
+		.correct {
+			fill: #77dd77;
+			color: #77dd77;
+		}
+
+		.result-div {
+			display: inline-flex;
+			flex-direction: row;
+			margin-left: auto;
+			margin-right: auto;
+			justify-content: center;
+			width: 100%;
+			height: 70px;
+			margin-top: 17px;
+			margin-bottom: 17px;
+		}
+		.result-text {
+			font-size: 2rem;
+		}
+		.result-icon {
+			color: #555;
+			display: inline-block;
+			width:2rem;
+			margin-left: 2rem;
+		}
+		.result {
+			align-self: center;
+		}
+	</style>
+}
+
+templ AnswerButton() {
+	<button
+		class="cool-btn submit submit-text"
+		type="submit"
+		hx-post="/answer"
+		hx-trigger="click"
+		hx-target="#question-div"
+		hx-swap="outerHTML"
+		id="answerBtn"
+	>Answer</button>
+}
+
 // todo... on focus loss refocus input
-templ Question(question domain.TTCurrentQuestion) {
+templ Question(question domain.TTCurrentQuestion, newSession bool, correct bool) {
 	<div id="question-div" class="question">
 		@QuestionText(question)
 		<form class="question-form">
 			@QuestionInput("")
-			<button
-				class="cool-btn submit submit-text"
-				type="submit"
-				hx-post="/answer"
-				hx-trigger="click"
-				hx-target="#question-text"
-				hx-swap="outerHTML"
-				id="answerBtn"
-			>Submit</button>
+			if newSession {
+				@AnswerButton()
+			} else {
+				@Result(correct)
+			}
 			<div class="buttons">
 				<div class="number-grid">
 					for i:=9; i>-1; i-- {
@@ -219,8 +313,9 @@ templ Question(question domain.TTCurrentQuestion) {
 		}
 
 		.submit {
-			margin-top: 20px;
-			margin-bottom: 20px;
+			height: 70px;
+			margin-top: 17px;
+			margin-bottom: 17px;
 			width: 400px;
 			margin-left:auto;
 			margin-right:auto;
@@ -258,6 +353,6 @@ templ Question(question domain.TTCurrentQuestion) {
 
 templ QuestionView(question domain.TTCurrentQuestion) {
 	@Pages.Page("Question") {
-		@Question(question)
+		@Question(question, true, false)
 	}
 }
