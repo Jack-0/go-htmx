@@ -8,16 +8,17 @@ import (
 
 templ QuestionInput(value string) {
 	<div class="number-input-div">
-	<input
-		type="number"
-		id="number-input"
-		class="numberInput"
-		name="number-input"
-		hx-post="/handle-keystroke"
-		hx-trigger="keyup"
-		hx-target="#number-input"
-		value={ value }
-	/>
+		<input
+			autofocus
+			type="number"
+			id="number-input"
+			class="numberInput"
+			name="number-input"
+			hx-post="/handle-keystroke"
+			hx-trigger="keyup"
+			hx-target="#number-input"
+			value={ value }
+		/>
 	</div>
 	<style type="text/css">
 		/* hide number arrow keys */
@@ -61,12 +62,12 @@ templ QuestionInput(value string) {
 }
 
 templ QuestionText(question domain.TTCurrentQuestion) {
-	<p 
-		class="question-text" 
-		id="question-text" 
-		hx-trigger="load" 
+	<p
+		class="question-text jackInTheBox"
+		id="question-text"
+		hx-trigger="load"
 		hx-target="#number-input"
-		hx-swap="outerHTML" 
+		hx-swap="outerHTML"
 		hx-post="/reset-number-input"
 	>
 		{ strconv.Itoa(int(question.ValueA)) } x { strconv.Itoa(int(question.ValueB)) }
@@ -78,6 +79,28 @@ templ QuestionText(question domain.TTCurrentQuestion) {
 			text-align: center;
 			margin-bottom: 2rem;
 			margin-top: 2rem;
+		}
+
+		@keyframes jackInTheBox {
+			from {
+				opacity: 0;
+				transform: scale(0.1) rotate(30deg);
+				transform-origin: center bottom;
+			}
+			50% {
+				transform: rotate(-10deg);
+			}
+			70% {
+				transform: rotate(3deg);
+			}
+			to {
+				opacity: 1;
+				transform: scale(1);
+			}
+		}
+		.jackInTheBox {
+			animation-name: jackInTheBox;
+		    animation-duration: 0.6s;
 		}
 	</style>
 }
