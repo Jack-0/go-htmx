@@ -7,6 +7,7 @@ import (
 )
 
 templ QuestionInput(value string) {
+	<div class="number-input-div">
 	<input
 		type="number"
 		id="number-input"
@@ -17,6 +18,7 @@ templ QuestionInput(value string) {
 		hx-target="#number-input"
 		value={ value }
 	/>
+	</div>
 	<style type="text/css">
 		/* hide number arrow keys */
 		input::-webkit-outer-spin-button,
@@ -28,31 +30,32 @@ templ QuestionInput(value string) {
 		  -moz-appearance: textfield;
 		  color: gray;
 		}
-		.numberInput {
-			width: 100%;
-			text-align: center;
-			border: none;
-			outline: none;
-			font-family: 'ComicMono', Fallback, sans-serif;
-			font-size: 88px;
-			color: #333333;
-			align-items: center; 
-			width: 100%; 
+		.number-input-div{
+			display: flex;
+			width: 400px;
 			margin-left: auto;
 			margin-right: auto; 
 		}
 
-		.numberInput:focus {
-			animation: blink-caret 0.75s step-end infinite;
+		.numberInput {
+			width: 100%;
+			text-align: center;
+			outline: none;
+			font-family: 'ComicMono', Fallback, sans-serif;
+			font-size: 88px;
+			color: #333333;
+			align-items: center;
+			justify-content: center;
+			border: 0.2rem solid #ced4da;
+			box-shadow: 0 4px #ced4da;
+			border-radius: 0.5rem;
+			padding-top: 0.7rem;
 		}
 
-		@keyframes blink-caret {
-		  from, to {
-			border-color: transparent;
-		  }
-		  50% {
-			border-color: #333333; 
-		  }
+		@media (max-width: 1023px) {
+			.number-input-div{
+				width: 100%;
+			}
 		}
 	</style>
 }
@@ -70,8 +73,11 @@ templ QuestionText(question domain.TTCurrentQuestion) {
 	</p>
 	<style type="text/css">
 		.question-text {
-			font-size: 88px;
+			color: #555;
+			font-size: 6rem;
 			text-align: center;
+			margin-bottom: 2rem;
+			margin-top: 2rem;
 		}
 	</style>
 }
