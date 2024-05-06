@@ -1,0 +1,100 @@
+package components
+
+import (
+	"local/htmx-tt/internal/templates/pages"
+	"local/htmx-tt/internal/domain"
+	"strconv"
+)
+
+templ QuestionFilterTable(questions []domain.TTQuestion) {
+	<div class="number-grid">
+		for i := range 13 {
+			for j := range 13 {
+				if i == 0 {
+					// show first row excluding 0
+					<div
+						if j != 0 {
+							class="header text cool-btn"
+						}
+					>
+						if j != 0 {
+							{ strconv.Itoa(j) }
+						}
+					</div>
+				} else if j == 0 {
+					// show first col
+					<div class="header text cool-btn">{ strconv.Itoa(i) }</div>
+				} else {
+					<div class="item text cool-btn">
+						{ strconv.Itoa(i*j) }
+					</div>
+				}
+			}
+		}
+	</div>
+	<style>
+	
+	.text {
+		text-align: center;
+		align-content: center;
+		width: 64px;
+		height: 64px;
+		font-size: 32px;
+
+	}
+
+
+	.item {
+	}
+
+	.number-grid {
+			display: flex;
+			margin-left: auto;
+			margin-right: auto; 
+			width: 400px;
+			display: grid;
+			grid-template-columns: repeat(13, 1fr);
+			grid-gap: 5px;
+			align-items: center;
+			justify-content: center;
+		}
+
+	.cool-btn {
+		/* font */
+		color: #555;
+		font-family: 'ComicMono', Fallback, sans-serif;
+		/* other */
+		background-color: #f1f3f5;
+		border: 3px solid #ced4da;
+		transition: all 0.1s;
+		user-select: none;
+	}
+	.cool-btn:focus,
+	.cool-btn:hover {
+		background-color: #e9ecef;
+		outline: 2px #1971c2;
+	}
+	.cool-btn:active {
+		transform: translateY(4px);
+		box-shadow: none;
+	}
+
+	.header {
+		color: #434343;
+		background-color: #ce83ff;
+		border: 3px solid #a568cd;
+	}
+	.header:focus,
+	.header:hover {
+		background-color: #ca79ff;
+		outline: 2px #a568cd;
+	}
+
+	</style>
+}
+
+templ QuestionFilter(questions []domain.TTQuestion) {
+	@Pages.Page("Filter") {
+		@QuestionFilterTable(questions)
+	}
+}

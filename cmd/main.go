@@ -52,7 +52,9 @@ func main() {
 	http.HandleFunc("/answer", func(w http.ResponseWriter, r *http.Request) {
 		answerQuestion(w, r, tt)
 	})
+
 	http.Handle("/question", returnQuestion(tt))
+	http.Handle("/filter", filter(tt))
 
 	http.HandleFunc("/post", func(w http.ResponseWriter, r *http.Request) {
 		// Call handlePostRequest with the service instance
@@ -89,6 +91,10 @@ func handleNumberButton(w http.ResponseWriter, r *http.Request) {
 		updatedInput = updatedInput + btnValue
 	}
 	components.QuestionInput(updatedInput).Render(r.Context(), w)
+}
+func filter(tt *timetable_service.TimeTable) *templ.ComponentHandler {
+	// tt.OrderQuestions()
+	return templ.Handler(components.QuestionFilter(tt.QuestionList))
 }
 
 func returnQuestion(tt *timetable_service.TimeTable) *templ.ComponentHandler {

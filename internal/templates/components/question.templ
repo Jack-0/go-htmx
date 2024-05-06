@@ -47,15 +47,16 @@ templ QuestionInput(value string) {
 			color: #333333;
 			align-items: center;
 			justify-content: center;
-			border: 0.2rem solid #ced4da;
-			box-shadow: 0 4px #ced4da;
+			border: 3px solid #ced4da;
+			box-shadow: 0 3px #ced4da;
 			border-radius: 0.5rem;
 			padding-top: 0.7rem;
 		}
 
 		@media (max-width: 1023px) {
 			.number-input-div{
-				width: 100%;
+				/* width: 100%; */
+				width: 400px;
 			}
 		}
 	</style>
@@ -276,10 +277,10 @@ templ Question(question domain.TTCurrentQuestion, newSession bool, correct bool)
 
 		.cool-btn-text {
 			color: #555;
-			display: flex;
+			/* display: flex; */
 			align-items: center;
 			justify-content: center;
-			padding: 2px;
+			/* padding: 2px; */
 			font-family: 'ComicMono', Fallback, sans-serif;
 		}
 
@@ -292,15 +293,14 @@ templ Question(question domain.TTCurrentQuestion, newSession bool, correct bool)
 			height: 100%;
 			display: inline-flex;
 			align-items: center;
-			font-size: 2rem;
+			font-size: 32px;
 			background-color: #f1f3f5;
-			border-radius: 0.5em;
-			border: 0.1em solid #ced4da;
-			box-shadow: 0 4px #ced4da;
+			border-radius: 15px;
+			border: 3px solid #ced4da;
+			box-shadow: 0 3px #ced4da;
 			transition: all 0.1s;
 			user-select: none;
-			margin-bottom: auto;
-			margin-right: auto;
+			margin: auto;
 		}
 		.cool-btn:focus,
 		.cool-btn:hover {
@@ -320,8 +320,8 @@ templ Question(question domain.TTCurrentQuestion, newSession bool, correct bool)
 			margin-left:auto;
 			margin-right:auto;
 			background-color: #ce83ff;
-			border: 0.1em solid #a568cd;
-			box-shadow: 0 4px #a568cd;
+			border: 3px solid #a568cd;
+			box-shadow: 0 3px #a568cd;
 		}
 		.submit:focus,
 		.submit:hover {
@@ -339,13 +339,15 @@ templ Question(question domain.TTCurrentQuestion, newSession bool, correct bool)
 
 		@media (max-width: 1023px) {
 			.number-grid {
-				width: 100%;
+				/* width: 100%; */
+				width: 400px;
 			}
 			.submit {
-				width: 100%;
+				/* width: 100%; */
+				width: 400px;
 			}
 			.cool-btn {
-				padding: 3rem;
+				/* padding: 3rem; */
 			}
 		}
 	</style>
