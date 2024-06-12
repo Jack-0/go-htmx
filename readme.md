@@ -1,4 +1,6 @@
-Experimenting with htmx
+# Timetable
+
+A basic app for practising simple multiplications. Made with golang using HTMX just for fun.
 
 ### Hot reloading 
 
@@ -7,16 +9,11 @@ Experimenting with htmx
 3. `./templ generate --watch --proxy="http://localhost:8080" --cmd="go run ."`
 
 
-### TODO
+# TODO
 
-- [x] create a tt
-- [ ] login a user (can be fake for now)
-- [ ] create data structure for tt... maybe (mult a, mult b, success rate?, last ms time to complete, ignored)
-- [ ] add ui to ignore easy times tables
-- [ ] add ui to hide show grid
-- [ ] text input box 
-- [ ] click input box
-- [ ] store data better
-- [ ] style better
-- [ ] 
-
+- get data from db
+- update data with db
+- add a quick nuke button... reset db for user
+- sorting algo
+- allow user to set filters
+- allow signin / signout
